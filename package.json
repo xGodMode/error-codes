@@ -7,7 +7,7 @@
     "/dist"
   ],
   "scripts": {
-    "build": "node_modules/typescript/bin/tsc",
+    "dist": "node_modules/typescript/bin/tsc",
     "clean": "rm -R node_modules",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
