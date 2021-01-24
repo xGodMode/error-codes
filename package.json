@@ -1,7 +1,7 @@
 {
   "name": "@xgm/error-codes",
   "version": "0.0.1",
-  "description": "Custom errors",
+  "description": "Custom errors for js",
   "main": "dist/index.js",
   "files": [
     "/dist"
