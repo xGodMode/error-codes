@@ -36,5 +36,8 @@
     "github": {
       "release": true
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
