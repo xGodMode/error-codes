@@ -9,7 +9,7 @@
   "scripts": {
     "dist": "node_modules/typescript/bin/tsc",
     "clean": "rm -R node_modules",
-    "release": "dotenv release-it -- --ci --only-version --verbose",
+    "release": "dotenv release-it -- --only-version --verbose",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "valmack",
@@ -30,6 +30,12 @@
     }
   },
   "release-it": {
+    "hooks": {
+      "before:init": [
+        "npm install",
+        "npm run dist"
+      ]
+    },
     "git": {
       "commitMessage": "release: v${version}"
     },
