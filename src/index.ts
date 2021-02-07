@@ -1,21 +1,50 @@
-class CustomError extends Error {
-    public readonly code: string
-    public readonly timestamp: number
-    public readonly metadata: { [key: string]: any }
+interface CustomError {
+    timestamp: Date
+    name: string
+    code: string
+    metadata?: { [key: string]: any }
+    message?: string
+    stack: any
+}
 
-    constructor(name: string, code: string, metadata?: any, ...params: any) {
-        super(...params)
+function CustomError(
+    name: string,
+    code: string,
+    metadata?: { [key: string]: any },
+    message?: string
+): CustomError {
+    const instance = metadata?.baseError || new Error(message)
 
-        // Maintains proper stack trace for where our error was thrown (only available on V8)
-        if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, CustomError)
-        }
-
-        this.name = name
-        this.code = code
-        this.timestamp = Date.now()
-        this.metadata = metadata
+    instance.name = name
+    instance.code = code
+    instance.timestamp = new Date()
+    instance.metadata = metadata
+    if (metadata?.baseError) {
+        // Remove circular object
+        delete instance.metadata.baseError
     }
+
+    Object.setPrototypeOf(instance, Object.getPrototypeOf(instance))
+    if (Error.captureStackTrace) {
+        Error.captureStackTrace(instance, CustomError)
+    }
+
+    return instance
+}
+
+CustomError.prototype = Object.create(Error.prototype, {
+    constructor: {
+        value: Error,
+        enumerable: false,
+        writable: true,
+        configurable: true,
+    },
+})
+
+if (Object.setPrototypeOf) {
+    Object.setPrototypeOf(CustomError, Error)
+} else {
+    CustomError.__proto__ = Error
 }
 
 export const GMError = (options: {
@@ -23,7 +52,7 @@ export const GMError = (options: {
     message?: string
     baseError?: Error
 }): CustomError => {
-    return new CustomError(
+    return CustomError(
         'GMError',
         `GM${options.subCode || ''}`,
         { baseError: options.baseError },
@@ -36,14 +65,14 @@ export const HTTPError = (
     message?: string
 ): CustomError => {
     const code = statusCode ? `HTTP${statusCode}` : `HTTP0`
-    return new CustomError('HTTPError', code, { statusCode }, message)
+    return CustomError('HTTPError', code, { statusCode }, message)
 }
 
 export const CAIPNetworkError = (options: {
     subCode?: string
     message?: string
 }): CustomError => {
-    return new CustomError(
+    return CustomError(
         'CAIPNetworkError',
         `CAIP_N${options.subCode || ''}`,
         null,
@@ -55,7 +84,7 @@ export const ProtocolError = (options: {
     subCode?: string
     message?: string
 }): CustomError => {
-    return new CustomError(
+    return CustomError(
         'ProtocolError',
         `PROTO${options.subCode || ''}`,
         null,
