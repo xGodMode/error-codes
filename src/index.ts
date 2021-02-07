@@ -1,9 +1,9 @@
-interface CustomError {
+interface CustomError extends Error {
     timestamp: Date
     name: string
     code: string
     metadata?: { [key: string]: any }
-    message?: string
+    message: string | undefined
     stack: any
 }
 

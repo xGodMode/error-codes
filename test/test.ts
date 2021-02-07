@@ -1,9 +1,9 @@
 import { GMError } from '../src'
 
-import chai from './utils/chai'
-
-chai.configure()
-const { expect } = chai
+import chai, { expect } from 'chai'
+import spies from 'chai-spies'
+chai.config.includeStack = true
+chai.use(spies)
 
 describe('GMError', () => {
     it('should include name, code, timestamp, and metadata', () => {
