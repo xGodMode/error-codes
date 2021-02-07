@@ -20,6 +20,9 @@ function CustomError(
     instance.timestamp = new Date()
     instance.metadata = metadata
     if (metadata?.baseError) {
+        instance.message = message
+            ? `${message} ${metadata.baseError.message}`
+            : instance.message
         // Remove circular object
         delete instance.metadata.baseError
     }

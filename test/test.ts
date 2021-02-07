@@ -32,4 +32,11 @@ describe('GMError', () => {
         const error = GMError({ baseError })
         expect(String(error)).to.contain(message)
     })
+    it('should concatenate message with base error message', () => {
+        const baseErrorMessage = 'Base error message'
+        const baseError = SyntaxError(baseErrorMessage)
+        const error = GMError({ message: 'Before the base.', baseError })
+        expect(String(error)).to.contain('Before the base.')
+        expect(String(error)).to.contain(baseErrorMessage)
+    })
 })
