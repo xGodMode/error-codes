@@ -11,9 +11,9 @@ npm install @xgm/error-codes
 ```
 
 ```js
-import { HTTPError } from '@xgm/error-codes'
+import { CAIPNetworkError } from '@xgm/error-codes'
 throw CAIPNetworkError({
-    message: `Unsupported network ${network}`,
+    message: 'Unsupported network',
 })
 ```
 
