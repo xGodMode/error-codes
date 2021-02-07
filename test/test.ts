@@ -26,4 +26,10 @@ describe('GMError', () => {
         const error = GMError({ message: 'The not base error', baseError })
         expect(error.stack).to.deep.equal(baseError.stack)
     })
+    it('should show base error message when stringified', () => {
+        const message = 'Base error message'
+        const baseError = SyntaxError(message)
+        const error = GMError({ baseError })
+        expect(String(error)).to.contain(message)
+    })
 })
