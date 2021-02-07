@@ -1,6 +1,6 @@
 {
   "name": "@xgm/error-codes",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Custom errors for js",
   "main": "dist/index.js",
   "files": [
